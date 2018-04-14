@@ -1,0 +1,9 @@
+{
+  "short_name": "Hópverkefni 2",
+  "name": "Hópverkefni 2",
+  "icons": [],
+  "start_url": "./index.html",
+  "display": "standalone",
+  "theme_color": "#dcbe87",
+  "background_color": "#ffffff"
+}
