@@ -1,3 +1,25 @@
 .header {
   background-color: #dcbe87;
+  display: flex;
+  justify-content: space-between;
+}
+
+h1.header__heading {
+  padding: 0.5em 1em;
+}
+
+h1.header__heading > a {
+  text-decoration: none;
+}
+
+form {
+  align-self: center;
+}
+ input {
+   margin: 0 1em;
+   padding: 0.5em 0;
+ }
+a.nav {
+   align-self: center;
+   padding: 0.5em 1em;
 }

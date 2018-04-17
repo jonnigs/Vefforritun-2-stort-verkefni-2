@@ -4,7 +4,6 @@ const baseurl = process.env.REACT_APP_SERVICE_URL;
 async function get(endpoint) {
 
   const token = window.localStorage.getItem('token');
-
   const url = `${baseurl}${endpoint}`;
 
   const options = {
@@ -14,9 +13,8 @@ async function get(endpoint) {
   if (token) {
     options.headers['Authorization'] = `Bearer ${token}`;
   }
-
   /* todo framkvæma get */
-  const response = await fetch(url);
+  const response = await fetch(url, options);
   const data = await response.json();
   return data;
 }
@@ -41,7 +39,56 @@ async function registerPost(username, password, name) {
   return data;
 }
 
+async function loginPost(username, password) {
+  const endpoint = '/login';
+  const url = `${baseurl}${endpoint}`;
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      username: username,
+      password: password,
+    })
+  })
+  const data = await response.json();
+  return data;
+}
+
+async function readPost(umsogn, einkunn, id) {
+  const endpoint = '/users/me/read';
+  const url = `${baseurl}${endpoint}`;
+
+  const token = window.localStorage.getItem('token');
+
+  const options = {
+    method: 'POST',
+    headers: {},
+    body: JSON.stringify({
+      bookId: Number(id),
+      rating: Number(einkunn),
+      review: umsogn,
+    })
+  };
+
+  if (token) {
+    options.headers['Authorization'] = `Bearer ${token}`;
+    options.headers['Accept'] = 'application/json';
+    options.headers['Content-Type'] = 'application/json';
+  }
+  console.log(options);
+  const response = await fetch(url, options);
+
+  const data = await response.json();
+  console.log(data);
+  return data;
+}
+
 export {
   get,
   registerPost,
+  loginPost,
+  readPost,
 };

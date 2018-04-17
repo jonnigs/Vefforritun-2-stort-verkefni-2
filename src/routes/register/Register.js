@@ -42,12 +42,12 @@ class Register extends Component {
         username: '',
         password: '',
         nafn: '',
-        message: 'Nýskráning tókst, þú getur núna skráð þig inn á síðuna',
+        message: <p className='success'>Nýskráning tókst, þú getur núna skráð þig inn á síðuna</p>,
       });
     } else {
       const message = mes.map((mess) => {
         return (
-          <p>{mess.message}</p>
+          <p className='error'>{mess.message}</p>
         )
       });
       this.setState({
@@ -59,7 +59,6 @@ class Register extends Component {
   async handleSubmit(e) {
     e.preventDefault();
     const res = await registerPost(this.state.username, this.state.password, this.state.name);
-    console.log(res);
     if (res.errors) {
       this.handleMessages(res.errors);
     } else {
