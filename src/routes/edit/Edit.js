@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { get, editBookPatch } from '../../api';
 
 import Button from '../../components/button';
@@ -97,7 +96,11 @@ class Edit extends Component {
     e.preventDefault();
     const res = await editBookPatch(this.state.data, this.props.match.params.id, this.state.title, this.state.author, this.state.description, this.state.category, this.state.isbn10, this.state.isbn13, this.state.published, this.state.pages, this.state.language);
     console.log(res);
-    this.setState({message: 'Bók hefur verið breytt'});
+    if (res.error) {
+      this.setState({message: <p className='villur'>Ekki tókst að breyta bók, bók verður að hafa titli og gilt 13 stafa ISBN13 númer</p>});
+    } else {
+      this.setState({message: <p className='success'>Bók hefur verið breytt</p>});
+    }
   }
 
   handleBack(e) {
@@ -106,7 +109,7 @@ class Edit extends Component {
 
 
   render() {
-    const { data, loading, message, error, title, author, description, category, isbn10, isbn13, published, pageCount, language } = this.state;
+    const { loading, message, error, title, author, description, category, categories, isbn10, isbn13, published, pageCount, language } = this.state;
 
     if (!localStorage.getItem('user')){
       return (<p>Þú þarft að vera innskráður notandi til að hafa aðgang að þessum hluta vefsins</p>);
@@ -127,35 +130,36 @@ class Edit extends Component {
         <h1>Breyta bók</h1>
         <form className='editForm'>
           <label>Titill:
-            <input type='text' value={this.state.title} onChange={this.handleTitleChange}/>
+            <input type='text' value={title} onChange={this.handleTitleChange}/>
           </label>
           <label>Höfundur:
-            <input type='text' value={this.state.author} onChange={this.handleAuthorChange}/>
+            <input type='text' value={author} onChange={this.handleAuthorChange}/>
           </label>
           <label className='lysingLabel'>Lýsing:
-            <textarea className='lysing' value={this.state.description} onChange={this.handleDescriptionChange}>
+            <textarea className='lysing' value={description} onChange={this.handleDescriptionChange}>
             </textarea>
           </label>
           <label>Flokkur:
-            <select name="einkunn" value={this.state.category} onChange={this.handleCategoryChange}>
-              {this.state.categories}
+            <select name="einkunn" value={category} onChange={this.handleCategoryChange}>
+              {categories}
             </select>
           </label>
           <label>ISBN10:
-            <input type='text' value={this.state.isbn10} onChange={this.handleISBN10Change}/>
+            <input type='text' value={isbn10} onChange={this.handleISBN10Change}/>
           </label>
           <label>ISBN13:
-            <input type='text' value={this.state.isbn13} onChange={this.handleISBN13Change}/>
+            <input type='text' value={isbn13} onChange={this.handleISBN13Change}/>
           </label>
           <label>Útgefin:
-            <input type='text' value={this.state.published} onChange={this.handlePublishedChange}/>
+            <input type='text' value={published} onChange={this.handlePublishedChange}/>
           </label>
           <label>Fjöldi síða:
-            <input type='text' value={this.state.pageCount} onChange={this.handlePageCountChange}/>
+            <input type='text' value={pageCount} onChange={this.handlePageCountChange}/>
           </label>
           <label>Tungumál:
-            <input type='text' value={this.state.language} onChange={this.handleLanguageChange}/>
+            <input type='text' value={language} onChange={this.handleLanguageChange}/>
           </label>
+          {message}
           <Button onClick={this.handleVista} children='Vista'/>
         </form>
         <Button onClick={this.handleBack} children='Til baka'/>

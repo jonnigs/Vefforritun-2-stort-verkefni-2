@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
-import { Route, NavLink, Link, Switch, withRouter } from 'react-router-dom'
+import { Route, Switch, withRouter } from 'react-router-dom'
 
-import UserRoute from './components/user-route';
+import UserRoute from './components/user-route'; // eslint-disable-line
 import Header from './components/header';
 
 import Home from './routes/home';
@@ -17,14 +16,12 @@ import Profile from './routes/profile';
 import Edit from './routes/edit';
 import Newbook from './routes/newbook';
 import NotFound from './routes/not-found';
-/* todo fleiri routes */
 
 import './App.css';
 
 class App extends Component {
 
   render() {
-    const authenticated = false; /* vita hvort notandi sé innskráður */
 
     return (
       <main className="main">
@@ -44,7 +41,6 @@ class App extends Component {
             <Route path="/users" exact component={Users} />
             <Route path="/users/:id" exact component={UserID} />
             <Route path="/profile" exact component={Profile} />
-            {/* todo fleiri route */}
             <Route component={NotFound} />
           </Switch>
         </div>
@@ -54,8 +50,4 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  /* todo stilla redux ef það er notað */
-}
-
-export default withRouter(connect(mapStateToProps)(App));
+export default withRouter(App);

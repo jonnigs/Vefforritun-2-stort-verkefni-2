@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { registerPost } from '../../api';
 
@@ -71,20 +70,20 @@ class Register extends Component {
     if (localStorage.getItem('user')) {
       return (<p>Þú ert nú þegar innskráður notandi</p>)
     }
-    
+
     return (
       <div className='meginmal'>
         <h2>Nýskráning</h2>
-        {this.state.message}
+        {message}
         <form className='registerForm'>
           <label>Notendanafn:
-            <input type='text' value={this.state.userneame} onChange={this.handleUsernameChange}/>
+            <input type='text' value={username} onChange={this.handleUsernameChange}/>
           </label>
           <label>Lykilorð:
-            <input type='password' value={this.state.userneame} onChange={this.handlePasswordChange}/>
+            <input type='password' value={password} onChange={this.handlePasswordChange}/>
           </label>
           <label>Nafn:
-            <input type='text' value={this.state.userneame} onChange={this.handleNameChange}/>
+            <input type='text' value={name} onChange={this.handleNameChange}/>
           </label>
           <Button onClick={this.handleSubmit} children='Nýskrá'/>
         </form>

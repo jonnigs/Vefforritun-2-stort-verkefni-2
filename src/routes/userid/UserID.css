@@ -1,0 +1,26 @@
+.myndAProfile {
+  border-radius: 1000px;
+  width: 6em;
+  height: 6em;
+}
+
+.profileDiv {
+  display: flex;
+}
+
+.notendaNafn {
+  align-self: center;
+  padding: 0 1em;
+}
+
+.lestrarDiv {
+  padding: 1em 0;
+}
+
+.lestrarHeading {
+  padding-bottom: 1em;
+}
+
+.stakurLestur {
+  padding: 1em 0;
+}

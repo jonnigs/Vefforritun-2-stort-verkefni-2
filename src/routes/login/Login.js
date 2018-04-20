@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { loginPost } from '../../api';
 
 import Button from '../../components/button';
@@ -47,17 +46,17 @@ class Login extends Component {
     if (localStorage.getItem('user')) {
       return (<p>Þú ert nú þegar innskráður notandi</p>)
     }
-    
+
     return (
       <div className='meginmal'>
         <h1>Innskráning</h1>
-        <p className='villur'>{this.state.message}</p>
+        <p className='villur'>{message}</p>
         <form className='loginForm'>
           <label>Notendanafn:
-            <input type='text' value={this.state.username} onChange={this.handleUsernameChange}/>
+            <input type='text' value={username} onChange={this.handleUsernameChange}/>
           </label>
           <label>Lykilorð:
-            <input type='password' value={this.state.password} onChange={this.handlePasswordChange}/>
+            <input type='password' value={password} onChange={this.handlePasswordChange}/>
           </label>
           <Button onClick={this.handleSubmit} children='Innskrá'/>
         </form>

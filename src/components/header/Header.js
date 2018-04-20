@@ -43,8 +43,12 @@ class Header extends Component {
     let profile = <Link to="/login" className='nav'>Innskráning</Link>;
     if (localStorage.getItem('user')) {
       const user = JSON.parse(localStorage.getItem('user'));
+      let mynd = <img className='profilepic' alt='engin prófílmynd' src='../../profile.jpg'/>;
+      if (user.image) {
+        mynd = <img className='profilepic' alt='prófílmynd' src={user.image}/>;
+      }
       profile = <div className='profilebox'>
-                  <img className='profilepic' src='../../profile.jpg'/>
+                  {mynd}
                   <div className='profilerest'>
                     <h3><Link to='/profile'>{user.name}</Link></h3>
                     <Button onClick={this.clearLocal} children='Logout' />
@@ -55,7 +59,7 @@ class Header extends Component {
       <header className="header">
         <h1 className="header__heading"><Link to="/">Bókasafnið</Link></h1>
         <form>
-          <input type='text' value={this.state.search} onChange={this.handleSearchChange}/>
+          <input type='text' value={search} onChange={this.handleSearchChange}/>
           <Button onClick={this.handleSubmit} children='Leita' />
         </form>
         {profile}

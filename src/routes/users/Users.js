@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { get } from '../../api';
 
 import Button from '../../components/button';
@@ -16,7 +15,9 @@ class Users extends Component {
     this.state = {
       data: null,
       loading: true,
+      error: null,
       offset: 0,
+      counter: 0,
     };
 
     this.handleBack = this.handleBack.bind(this);
@@ -24,14 +25,18 @@ class Users extends Component {
   }
 
   setOffset() {
-    const query = '';
+    if (window.location.search) {
+      const query = window.location.search;
+      const lidad = query.split('=');
+      this.setState({offset: lidad[1]});
+    }
   }
 
   async componentDidMount() {
-    this.setOffset();
+    await this.setOffset();
     try {
-      const data = await get('/users');
-      this.setState({ data, loading: false });
+      const data = await get('/users?offset=' + this.state.offset);
+      this.setState({ data, loading: false, counter: data.items.length });
     } catch (error) {
       console.error('Error fetching users', error);
       this.setState({ error: true, loading: false });
@@ -49,24 +54,33 @@ class Users extends Component {
   }
 
   render() {
-    const { data, loading, offset } = this.state;
+    const { data, loading, error, offset, counter } = this.state;
 
     let fyrriTakki = '';
-    if (Number(this.state.offset) !== 0) {
+    if (Number(offset) !== 0) {
       fyrriTakki = <Button onClick={this.handleBack} children='Fyrri síða'/>;
+    }
+
+    let seinniTakki = <Button onClick={this.handleNext} children='Næsta síða'/>;
+    if (counter < 10) {
+      seinniTakki = '';
+    }
+
+    if (!localStorage.getItem('user')) {
+      return (<p>Til að skoða þennan hluta vefsins þarft þú að vera innskráður notandi</p>);
     }
 
     if (loading) {
       return (<p>Hleð notendum...</p>);
     }
 
-    /*if (error) {
-      return (<p>Villa við að hlaða bókum</p>);
-    }*/
+    if (error) {
+      return (<p>Villa við að hlaða notendum</p>);
+    }
 
-    const gogn = this.state.data.items.map((user) => {
+    const gogn = data.items.map((user) => {
       return (
-        <div>
+        <div className='notendaLinkar' key={user.id}>
           <strong>
             <Link to={'/users/' + user.id}>{user.username}</Link>
           </strong>
@@ -75,12 +89,14 @@ class Users extends Component {
     })
 
     return (
-      <div>
-        <h2>Notendur</h2>
+      <div className='meginmal'>
+        <h1 className='userHeading'>Notendur</h1>
         {gogn}
-        {fyrriTakki}
-        <p>Síða {(Number(this.state.offset)/10) + 1}</p>
-        <Button onClick={this.handleNext} children='Næsta síða'/>
+        <div className='takkaDiv'>
+          {fyrriTakki}
+          <p className='sida'>Síða {(Number(offset)/10) + 1}</p>
+          {seinniTakki}
+        </div>
       </div>
     );
   }

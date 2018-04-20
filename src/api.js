@@ -126,6 +126,7 @@ async function editBookPatch(data, id, title, author, description, category, isb
 
   const token = window.localStorage.getItem('token');
 
+
   const options = {
     method: 'PATCH',
     headers: {},
@@ -235,6 +236,35 @@ async function profileMyndPost(file, path, id) {
   return data;
 }
 
+async function lesturDelete(readid, userid) {
+  const endpoint = '/users/me/read/' + readid;
+  const url = `${baseurl}${endpoint}`;
+
+  const token = window.localStorage.getItem('token');
+
+  const options = {
+    method: 'DELETE',
+    headers: {},
+    params: JSON.stringify({
+      id: readid,
+    }),
+    user: JSON.stringify({
+      id: userid,
+    }),
+  };
+
+  if (token) {
+    options.headers['Authorization'] = `Bearer ${token}`;
+    options.headers['Accept'] = 'application/json';
+    options.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+  }
+  console.log(options);
+  const response = await fetch(url, options);
+  return response;
+  /*console.log(response);
+  const data = await response.json();
+  return data;*/
+}
 
 export {
   get,
@@ -245,4 +275,5 @@ export {
   profileMyndPost,
   editBookPatch,
   newBookPost,
+  lesturDelete,
 };

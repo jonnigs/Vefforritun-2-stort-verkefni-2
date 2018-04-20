@@ -4,6 +4,8 @@ import { get, readPost } from '../../api';
 
 import Button from '../../components/button';
 
+import './Book.css';
+
 class Book extends Component {
 
   constructor(props) {
@@ -11,10 +13,12 @@ class Book extends Component {
     this.state = {
       data: null,
       loading: true,
+      error: null,
       lestur: false,
       umsogn: '',
-      einkunn: false,
+      einkunn: 1,
       message: '',
+      id: this.props.match.params.id,
     }
 
     this.handleBack = this.handleBack.bind(this);
@@ -28,7 +32,10 @@ class Book extends Component {
 
   async componentDidMount() {
     try {
-      const data = await get('/books/'+this.props.match.params.id);
+      const data = await get('/books/'+ this.props.match.params.id);
+      if (data.error) {
+        window.location('/error');
+      }
       this.setState({ data, loading: false });
     } catch (error) {
       console.error('Error fetching books', error);
@@ -55,7 +62,11 @@ class Book extends Component {
   async handleVista(e) {
     e.preventDefault();
     const res = await readPost(this.state.umsogn, this.state.einkunn, this.props.match.params.id);
-    this.setState({message: 'Lestur á bók var skráður', lestur: false});
+    if (res.error) {
+      this.setState({message: <p className='villur'>Ekki tókst að skrá lestur, athugaðu hvort allt hafi verið sett rétt inn</p>})
+    } else {
+      this.setState({message: <p className='success'>Lestur á bók hefur verið skráður</p>, lestur: false});
+    }
   }
 
   handleHaetta(e) {
@@ -63,15 +74,15 @@ class Book extends Component {
   }
 
   render() {
-    const { data, loading, lestur, umsogn, einkunn, message } = this.state;
+    const { data, loading, error, lestur, umsogn, einkunn, message, id } = this.state;
 
     if (loading) {
       return (<p>Sæki bók...</p>);
     }
 
-    /*if (error) {
-      return (<p>Villa við að hlaða bókum</p>);
-    }*/
+    if (error) {
+      return (<p>Villa við að hlaða bók</p>);
+    }
 
     let description = data.description;
     if (data.description) {
@@ -91,35 +102,42 @@ class Book extends Component {
     }
 
     let skilabod = '';
-    if (this.state.message) {
-      skilabod = <p>{this.state.message}</p>
+    if (message) {
+      skilabod = message;
     }
 
     let lesa = '';
-    if (this.state.lestur) {
-       lesa = <form>
-                <label> Um bók:
-                  <textarea value={this.state.umsogn} onChange={this.handleUmsognChange}>
-                  </textarea>
-                </label>
-                <label> Einkunn:
-                  <select name="einkunn" value={this.state.einkunn} onChange={this.handleEinkunnChange}>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                  </select>
-                </label>
-                <Button onClick={this.handleVista} children='Vista'/>
-                <Button onClick={this.handleHaetta} children='Hætta við' />
-              </form>;
-    } else {
-      lesa = <Button onClick={this.handleRead} children='Lesin bók'/>
+    let breytaBok = '';
+    if (localStorage.getItem('user')) {
+      if (lestur) {
+         lesa = <form>
+                  <label> Um bók:
+                    <textarea className='umBok' value={umsogn} onChange={this.handleUmsognChange}>
+                    </textarea>
+                  </label>
+                  <label> Einkunn:
+                    <select className='einkunn' name="einkunn" value={einkunn} onChange={this.handleEinkunnChange}>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                    </select>
+                  </label>
+                  <div className='bookidFormTakkaDiv'>
+                    <Button onClick={this.handleVista} children='Vista'/>
+                    <Button className='carefull' onClick={this.handleHaetta} children='Hætta við' />
+                  </div>
+                </form>;
+      } else {
+        lesa = <Button className='bookidTakki' onClick={this.handleRead} children='Lesin bók'/>
+      }
+      breytaBok = <Link to={'/books/' + id + '/edit'}><Button className='bookidTakki' children='Breyta bók'/></Link>;
     }
+
     return (
-      <div>
-        <h3>{data.title}</h3>
+      <div className='meginmal'>
+        <h2>{data.title}</h2>
         <p>Eftir {data.author}</p>
         <p>ISBN13-{data.isbn13}</p>
         <p>{data.categorytitle}</p>
@@ -127,10 +145,12 @@ class Book extends Component {
         {pagecount}
         {published}
         {language}
-        <p>Breyta bók</p>
         {skilabod}
-        {lesa}
-        <Button onClick={this.handleBack} children='Til baka'/>
+        <div className='takkar'>
+          {breytaBok}
+          {lesa}
+          <Button className='bookidTakki' onClick={this.handleBack} children='Til baka'/>
+        </div>
       </div>
     );
   }

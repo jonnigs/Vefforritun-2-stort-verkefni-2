@@ -1,5 +1,5 @@
 import {
-  LOGIN_REQUEST,
+  LOGIN_REQUEST, // eslint-disable-line
   /* todo fleiri actions */
 } from '../actions/auth';
 

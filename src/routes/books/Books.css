@@ -9,5 +9,16 @@
 .takkaDiv {
   width: 70%;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.sida {
+  padding: 0 1em;
+  margin-bottom: 0;
+  align-self: center;
+}
+
+.notendaLinkar {
+  padding: 0.5em 0;
 }

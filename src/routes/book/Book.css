@@ -1,0 +1,44 @@
+.takkar {
+  display: flex;
+  flex-flow: column;
+  align-items: flex-start;
+}
+
+.takkar > form {
+  align-self: flex-start;
+  display: flex;
+  flex-flow: column;
+  width: 40%;
+}
+
+.takkar > form > label {
+  display: flex;
+  flex-flow: column;
+  padding: 1em 0;
+}
+
+.bookidTakki {
+  margin: 1em 0;
+}
+
+.bookidFormTakkaDiv {
+  display: flex;
+  justify-content: space-between;
+}
+
+.bookidFormTakkaDiv > .carefull {
+  margin-right: 1em;
+}
+
+.umBok {
+  width: 96%;
+  height: 15em;
+  margin: 0 1em;
+  align-self: flex-end;
+  resize: none;
+  overflow: auto;
+}
+
+.einkunn {
+  width: 6em;
+}

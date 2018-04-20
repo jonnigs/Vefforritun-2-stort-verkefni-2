@@ -1,11 +1,6 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { get } from '../../api';
-
-import Button from '../../components/button';
-
-/* todo sækja actions frá ./actions */
 
 import './UserID.css';
 import '../../profile.jpg';
@@ -15,11 +10,11 @@ class UserID extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      error: null,
       userData: null,
       userReadData: null,
       bokaNofn: [],
       loading: true,
-      offset: 0,
     };
   }
 
@@ -27,6 +22,9 @@ class UserID extends Component {
     const params = window.location.pathname;
     const butad = params.split('/');
     const id = butad[2];
+    if (isNaN(id) && id !== 'me') {
+      this.setState({error: true});
+    }
     try {
       const userData = await get('/users/'+ id);
       const userReadData = await get('/users/'+ id + '/read');
@@ -46,45 +44,53 @@ class UserID extends Component {
   }
 
   render() {
-    const { userData, userReadData, bokaNofn, loading, offset } = this.state;
+    const { error, userData, userReadData, bokaNofn, loading } = this.state;
 
     if (loading) {
       return (<p>Hleð notanda...</p>);
     }
 
-    /*if (error) {
-      return (<p>Villa við að hlaða bókum</p>);
-    }*/
+    if (error) {
+      return (<p>Villa við að hlaða notanda</p>);
+    }
 
     let mynd = '';
     if (!userData.image) {
-      mynd = <img src='../../profile.jpg'/>
+      mynd = <img className='myndAProfile' alt='engin prófílmynd' src='../../profile.jpg'/>
+    } else {
+      mynd = <img className='myndAProfile' alt='prófílmtnd' src={userData.image}/>
     }
 
-    let lestur = <h2>Enginn skráður lestur hjá notanda</h2>;
+    let lestur = <h2 className='lestrarHeading'>Enginn skráður lestur hjá notanda</h2>;
     let lesnarBaekur = '';
     let counter = -1;
     if(userReadData.items.length > 0) {
-      lestur = <h2>Lesnar bækur</h2>
-      lesnarBaekur = this.state.userReadData.items.map((bok) => {
+      lestur = <h2 className='lestrarHeading'>Lesnar bækur</h2>
+      lesnarBaekur = userReadData.items.map((bok) => {
         counter += 1;
         return (
-          <div>
-          <Link to={'/books/' + bok.book_id}><p>{this.state.bokaNofn[counter]}</p></Link>
-          <p>Einkunn: {bok.rating}</p>
-          <p>{bok.review}</p>
-          </div>
+          <li className='stakurLestur'>
+            <Link to={'/books/' + bok.book_id}><h3>{bokaNofn[counter]}</h3></Link>
+            <p>Einkunn: {bok.rating}</p>
+            <p>{bok.review}</p>
+          </li>
         )
       })
     }
 
 
     return (
-      <div>
-        {mynd}
-        <h2>{userData.name}</h2>
-        {lestur}
-        {lesnarBaekur}
+      <div className='meginmal'>
+        <div className='profileDiv'>
+          {mynd}
+          <h2 className='notendaNafn'>{userData.name}</h2>
+        </div>
+        <div className='lestrarDiv'>
+          {lestur}
+          <ul>
+            {lesnarBaekur}
+          </ul>
+        </div>
       </div>
     );
   }

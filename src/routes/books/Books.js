@@ -16,6 +16,7 @@ class Books extends Component {
       error: null,
       offset: 0,
       search: '',
+      counter: 0,
     };
 
     this.handleBack = this.handleBack.bind(this);
@@ -48,9 +49,8 @@ class Books extends Component {
   async componentDidMount() {
     this.setQueryValues();
     try {
-      const query = this.props.location.search;
       const data = await get('/books' + this.props.location.search);
-      this.setState({ data, loading: false });
+      this.setState({ data, loading: false, counter: data.items.length });
     } catch (error) {
       console.error('Error fetching books', error);
       this.setState({ error: true, loading: false });
@@ -77,18 +77,18 @@ class Books extends Component {
   }
 
   render() {
-    const { data, error, loading, offset } = this.state;
+    const { data, error, loading, offset, search, counter } = this.state;
 
     let fyrriTakki = '';
-    if (Number(this.state.offset) !== 0) {
+    if (Number(offset) !== 0) {
       fyrriTakki = <Button onClick={this.handleBack} children='Fyrri síða'/>;
     }
     //console.log(this.state.data.items[0]);
     //if (this.state.data.items.lenght < 10)
 
     let heading = <h1 className='bokaFyrirsogn'>Bækur</h1>;
-    if (this.state.search !== ''){
-      heading = <h2 className='bokaFyrirsogn'>Bókaleit: {this.state.search}</h2>;
+    if (search !== ''){
+      heading = <h1 className='bokaFyrirsogn'>Bókaleit: {search}</h1>;
     }
     if (loading) {
       return (<p>Hleð bókum...</p>);
@@ -98,14 +98,11 @@ class Books extends Component {
       return (<p>Villa við að hlaða bókum</p>);
     }
 
-    const counter = 0;
-    const gogn = this.state.data.items.map((bok) => {
-      //counter = counter + 1;
+    const gogn = data.items.map((bok) => {
       let published = bok.published;
       if (bok.published) {
         published = ', gefin út ' + bok.published;
       }
-
       return (
         <div key={bok.id}>
           <Link to={'/books/' + bok.id}><h3>{bok.title}</h3></Link>
@@ -114,14 +111,19 @@ class Books extends Component {
         )
     })
 
+    let seinniTakki = <Button onClick={this.handleNext} children='Næsta síða'/>;
+    if (counter < 10) {
+      seinniTakki = '';
+    }
+
     return (
       <div className='meginmal'>
         {heading}
         {gogn}
         <div className='takkaDiv'>
           {fyrriTakki}
-          <p>Síða {(Number(this.state.offset)/10) + 1}</p>
-          <Button onClick={this.handleNext} children='Næsta síða'/>
+          <p className='sida'>Síða {(Number(offset)/10) + 1}</p>
+          {seinniTakki}
         </div>
       </div>
     );

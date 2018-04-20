@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Link, Redirect } from 'react-router-dom';
-import { get, profilePatch, profileMyndPost } from '../../api';
+import { Link } from 'react-router-dom';
+import { get, profilePatch, profileMyndPost, lesturDelete } from '../../api';
 
 import Button from '../../components/button';
 
@@ -29,6 +28,7 @@ class Profile extends Component {
     this.changeMynd = this.changeMynd.bind(this);
     this.changeName = this.changeName.bind(this);
     this.changePassword = this.changePassword.bind(this);
+    this.eydaLestri = this.eydaLestri.bind(this);
   }
 
   handleMyndChange(e) {
@@ -45,6 +45,15 @@ class Profile extends Component {
     this.setState({name: e.target.value});
   }
 
+  async eydaLestri(readid) {
+    const res = await lesturDelete(readid, this.state.id );
+    if (res.error) {
+      this.setState({message: <p className='villur'>Ekki tókst að eyða lestri</p>})
+    } else {
+      document.getElementById(readid).style.display = "none";
+    }
+  }
+
   async componentDidMount() {
     const res = await get('/users/me/read');
     const user = JSON.parse(localStorage.getItem('user'));
@@ -52,13 +61,13 @@ class Profile extends Component {
     if (res.items.length > 0) {
       const data = res.items.map((bok) => {
         return (
-          <div className='hverBok'>
+          <div className='hverBok' id={bok.id}>
             <h3>
               <Link to={'/books/' + bok.book_id}>{bok.title}</Link>
             </h3>
             <p>Einkunn: {bok.rating}</p>
             <p>Þín umsögn: {bok.review}</p>
-            <Button children='Eyða lestri'/>
+            <Button className='carefull' onClick={() => this.eydaLestri(bok.id)} children='Eyða lestri'/>
           </div>
         )
       })
@@ -72,40 +81,52 @@ class Profile extends Component {
     console.log(fil.value);
     const res = await profileMyndPost(this.fileInput.files[0], fil.value, this.state.id);
     if (res.error) {
-      this.setState({message: 'Ekki tókst að lesa mynd'})
+      this.setState({message: <p className='villur'>Ekki tókst að lesa mynd</p>})
     } else {
-      this.setState({message: 'Ný profilemynd hefur verið sett'})
+      this.setState({message: <p className='success'>Ný profilemynd hefur verið sett</p>})
     }
     console.log(res);
   }
 
   async changeName(e) {
     e.preventDefault();
-    const res = await profilePatch(this.state.name, false, this.state.id);
-    const user = JSON.parse(localStorage.getItem('user'));
-    user.name = this.state.name;
-    localStorage.removeItem("user");
-    localStorage.setItem('user', JSON.stringify(user));
-    this.setState({message: <p>Nafn hefur verið uppfært</p>});
+    let res = {};
+    if (this.state.name !== '') {
+      res = await profilePatch(this.state.name, false, this.state.id);
+    }
+    if (res.errors || this.state.name === '') {
+      this.setState({message: <p className='villur'>Ekki tókst að breyta nafni</p>})
+    } else {
+      const user = JSON.parse(localStorage.getItem('user'));
+      user.name = this.state.name;
+      localStorage.removeItem("user");
+      localStorage.setItem('user', JSON.stringify(user));
+      this.setState({message: <p className='success'>Nafn hefur verið uppfært</p>});
+    }
   }
 
   async changePassword(e) {
     e.preventDefault();
     if (this.state.password === this.state.password2 && this.state.password !== '') {
       const res = await profilePatch(false, this.state.password, this.state.id);
-      this.setState({message: <p>Lykilorð hefur verið uppfært</p>})
+      if (res.errors) {
+        this.setState({message: <p className='villur'>Ekki tókst að uppfæra lykilorð</p>})
+      } else {
+        this.setState({message: <p className='success'>Lykilorð hefur verið uppfært</p>})
+      }
     } else {
-      this.setState({message: <p>Lykilorð stemma ekki</p>})
+      this.setState({message: <p className='villur'>Lykilorð stemma ekki</p>})
     }
   }
 
   render() {
-    const { mynd, password, password2, name, message, lestur } = this.state;
+    const { password, password2, name, message, lestur } = this.state;
 
     let villuskilaboð = '';
     if (!localStorage.getItem('user')) {
       villuskilaboð = <p>Þú ert ekki innskráður notandi, hægt er að <Link to='/login'>skrá sig inn hér</Link> eða <Link to='/register'>nýskrá sig hér.</Link></p>
     }
+
     let form = '';
     if (localStorage.getItem('user')) {
       form =  <div className='profileForm'>
@@ -115,17 +136,17 @@ class Profile extends Component {
                 </form>
                 <form className='profileName'>
                   <label className='nameLabel'>Nafn:
-                    <input type='text' value={this.state.name} onChange={this.handleNameChange}/>
+                    <input type='text' value={name} onChange={this.handleNameChange}/>
                   </label>
                   <Button onClick={this.changeName} children='Uppfæra nafn'/>
                 </form>
                 <form className='profilePass'>
                   <label className='passLabel'>Lykilorð:
-                    <input type='password' value={this.state.password} onChange={this.handlePasswordChange}/>
+                    <input type='password' value={password} onChange={this.handlePasswordChange}/>
                   </label>
                   <br />
                   <label className='passLabel'>Lykilorð, aftur:
-                    <input type='password' value={this.state.password2} onChange={this.handlePassword2Change}/>
+                    <input type='password' value={password2} onChange={this.handlePassword2Change}/>
                   </label>
                   <Button onClick={this.changePassword} children='Uppfæra lykilorð'/>
                 </form>
@@ -136,10 +157,10 @@ class Profile extends Component {
       <div className='meginmal'>
         <h1>Upplýsingar</h1>
         {villuskilaboð}
-        <p>{this.state.message}</p>
+        {message}
         {form}
         <h1 className='profileLesnar'>Lesnar bækur</h1>
-        <div>{this.state.lestur}</div>
+        <div>{lestur}</div>
       </div>
     );
   }

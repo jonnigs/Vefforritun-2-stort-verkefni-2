@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { get, newBookPost } from '../../api';
 
 import Button from '../../components/button';
@@ -56,7 +55,7 @@ class Newbook extends Component {
   setFlokkar(flokkar) {
     const cat = flokkar.items.map((flokkur) => {
       return (
-        <option value={flokkur.id}>{flokkur.title}</option>
+        <option key={flokkur.id} value={flokkur.id}>{flokkur.title}</option>
       )
     });
     this.setState({categories: cat});
@@ -110,7 +109,7 @@ class Newbook extends Component {
 
 
   render() {
-    const { loading, message, error, title, author, description, category, isbn10, isbn13, published, pageCount, language } = this.state;
+    const { loading, message, error, title, author, description, category, categories, isbn10, isbn13, published, pageCount, language } = this.state;
 
     if (!localStorage.getItem('user')){
       return (<p>Þú þarft að vera innskráður notandi til að hafa aðgang að þessum hluta vefsins</p>);
@@ -129,37 +128,37 @@ class Newbook extends Component {
     return (
       <div className='newFormBox'>
         <h1>Skrá nýja bók</h1>
-        {this.state.message}
+        {message}
         <form className='newForm'>
           <label>Titill:
-            <input type='text' value={this.state.title} onChange={this.handleTitleChange}/>
+            <input type='text' value={title} onChange={this.handleTitleChange}/>
           </label>
           <label>Höfundur:
-            <input type='text' value={this.state.author} onChange={this.handleAuthorChange}/>
+            <input type='text' value={author} onChange={this.handleAuthorChange}/>
           </label>
           <label className='lysingLabel'>Lýsing:
-            <textarea className='lysing' value={this.state.description} onChange={this.handleDescriptionChange}>
+            <textarea className='lysing' value={description} onChange={this.handleDescriptionChange}>
             </textarea>
           </label>
           <label>Flokkur:
-            <select name="einkunn" value={this.state.category} onChange={this.handleCategoryChange}>
-              {this.state.categories}
+            <select name="einkunn" value={category} onChange={this.handleCategoryChange}>
+              {categories}
             </select>
           </label>
           <label>ISBN10:
-            <input type='text' value={this.state.isbn10} onChange={this.handleISBN10Change}/>
+            <input type='text' value={isbn10} onChange={this.handleISBN10Change}/>
           </label>
           <label>ISBN13:
-            <input type='text' value={this.state.isbn13} onChange={this.handleISBN13Change}/>
+            <input type='text' value={isbn13} onChange={this.handleISBN13Change}/>
           </label>
           <label>Útgefin:
-            <input type='text' value={this.state.published} onChange={this.handlePublishedChange}/>
+            <input type='text' value={published} onChange={this.handlePublishedChange}/>
           </label>
           <label>Fjöldi síða:
-            <input type='text' value={this.state.pageCount} onChange={this.handlePageCountChange}/>
+            <input type='text' value={pageCount} onChange={this.handlePageCountChange}/>
           </label>
           <label>Tungumál:
-            <input type='text' value={this.state.language} onChange={this.handleLanguageChange}/>
+            <input type='text' value={language} onChange={this.handleLanguageChange}/>
           </label>
           <Button onClick={this.handleVista} children='Vista'/>
         </form>
