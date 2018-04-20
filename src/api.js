@@ -126,7 +126,6 @@ async function editBookPatch(data, id, title, author, description, category, isb
 
   const token = window.localStorage.getItem('token');
 
-
   const options = {
     method: 'PATCH',
     headers: {},
@@ -168,7 +167,8 @@ async function editBookPatch(data, id, title, author, description, category, isb
     options.body['language'] = language;
   }
 
-  console.log(options);
+  const tempBody = JSON.stringify(options.body);
+  options.body = tempBody;
 
   const response = await fetch(url, options);
   const res = await response.json();
@@ -214,23 +214,22 @@ async function profileMyndPost(file, path, id) {
   const endpoint = '/users/me/profile';
   const url = `${baseurl}${endpoint}`;
 
+  const formData = new FormData();
+
+  formData.append("profile", file);
+
   const token = window.localStorage.getItem('token');
 
   const options = {
     method: 'POST',
     headers: {},
-    file: file,
+    body: formData,
     user: id,
   };
 
-  options.file['path'] = path;
-
   if (token) {
     options.headers['Authorization'] = `Bearer ${token}`;
-    options.headers['Accept'] = 'application/json';
-    options.headers['Content-Type'] = 'application/x-www-form-urlencoded';
   }
-  console.log(options);
   const response = await fetch(url, options);
   const data = await response.json();
   return data;

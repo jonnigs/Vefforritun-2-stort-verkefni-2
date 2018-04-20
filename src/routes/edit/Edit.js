@@ -59,7 +59,7 @@ class Edit extends Component {
   setFlokkar(flokkar) {
     const cat = flokkar.items.map((flokkur) => {
       return (
-        <option value={flokkur.id}>{flokkur.title}</option>
+        <option key={flokkur.id} value={flokkur.id}>{flokkur.title}</option>
       )
     });
     this.setState({categories: cat});
@@ -96,7 +96,6 @@ class Edit extends Component {
   async handleVista(e) {
     e.preventDefault();
     const res = await editBookPatch(this.state.data, this.props.match.params.id, this.state.title, this.state.author, this.state.description, this.state.category, this.state.isbn10, this.state.isbn13, this.state.published, this.state.pages, this.state.language);
-    console.log(res);
     if (res.error) {
       this.setState({message: <p className='villur'>Ekki tókst að breyta bók, bók verður að hafa titli og gilt 13 stafa ISBN13 númer</p>});
     } else {

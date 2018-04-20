@@ -79,14 +79,16 @@ class Profile extends Component {
   async changeMynd(e) {
     e.preventDefault();
     const fil = document.getElementById("mynd");
-    console.log(fil.value);
     const res = await profileMyndPost(this.fileInput.files[0], fil.value, this.state.id);
     if (res.error) {
       this.setState({message: <p className='villur'>Ekki tókst að lesa mynd</p>})
     } else {
-      this.setState({message: <p className='success'>Ný profilemynd hefur verið sett</p>})
+      const user = JSON.parse(localStorage.getItem('user'));
+      user.image = res.image;
+      localStorage.removeItem("user");
+      localStorage.setItem('user', JSON.stringify(user));
+      this.setState({message: <p className='success'>Ný profilemynd hefur verið sett</p>});
     }
-    console.log(res);
   }
 
   async changeName(e) {

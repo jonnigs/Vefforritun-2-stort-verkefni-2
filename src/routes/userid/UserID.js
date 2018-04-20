@@ -70,7 +70,7 @@ class UserID extends Component {
       lesnarBaekur = userReadData.items.map((bok) => {
         counter += 1;
         return (
-          <li className='stakurLestur'>
+          <li key={bok.id} className='stakurLestur'>
             <Link to={'/books/' + bok.book_id}><h3>{bokaNofn[counter]}</h3></Link>
             <p>Einkunn: {bok.rating}</p>
             <p>{bok.review}</p>
