@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import { get, profilePatch, profileMyndPost, lesturDelete } from '../../api';
 
@@ -61,7 +62,7 @@ class Profile extends Component {
     if (res.items.length > 0) {
       const data = res.items.map((bok) => {
         return (
-          <div className='hverBok' id={bok.id}>
+          <div className='hverBok' key={bok.id} id={bok.id}>
             <h3>
               <Link to={'/books/' + bok.book_id}>{bok.title}</Link>
             </h3>
@@ -155,6 +156,7 @@ class Profile extends Component {
 
     return (
       <div className='meginmal'>
+        <Helmet title="Prófíll" />
         <h1>Upplýsingar</h1>
         {villuskilaboð}
         {message}

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 
 import './Home.css';
@@ -15,6 +16,7 @@ class Home extends Component {
 
     return (
       <div className='meginmal'>
+        <Helmet title="Forsíða" />
         <h1 className='forsidufyrirsogn'>Velkomin á bókasafnið</h1>
         {byrjunarSkilabod}
         {skilabodTvo}

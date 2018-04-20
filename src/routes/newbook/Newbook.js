@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Helmet from 'react-helmet';
 import { get, newBookPost } from '../../api';
 
 import Button from '../../components/button';
@@ -127,6 +128,7 @@ class Newbook extends Component {
 
     return (
       <div className='newFormBox'>
+        <Helmet title="Ný bók" />
         <h1>Skrá nýja bók</h1>
         {message}
         <form className='newForm'>

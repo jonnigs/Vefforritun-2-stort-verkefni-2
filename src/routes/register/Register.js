@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import { registerPost } from '../../api';
 
@@ -73,6 +74,7 @@ class Register extends Component {
 
     return (
       <div className='meginmal'>
+        <Helmet title="Nýskráning" />
         <h2>Nýskráning</h2>
         {message}
         <form className='registerForm'>

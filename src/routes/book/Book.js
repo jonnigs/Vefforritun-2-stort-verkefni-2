@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import { get, readPost } from '../../api';
 
@@ -137,6 +138,7 @@ class Book extends Component {
 
     return (
       <div className='meginmal'>
+        <Helmet title={data.title} />
         <h2>{data.title}</h2>
         <p>Eftir {data.author}</p>
         <p>ISBN13-{data.isbn13}</p>

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import { get } from '../../api';
 
@@ -81,6 +82,7 @@ class UserID extends Component {
 
     return (
       <div className='meginmal'>
+        <Helmet title={userData.name} />
         <div className='profileDiv'>
           {mynd}
           <h2 className='notendaNafn'>{userData.name}</h2>

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Helmet from 'react-helmet';
 import { get, editBookPatch } from '../../api';
 
 import Button from '../../components/button';
@@ -127,6 +128,7 @@ class Edit extends Component {
 
     return (
       <div className='editFormBox'>
+        <Helmet title="Breyta bók" />
         <h1>Breyta bók</h1>
         <form className='editForm'>
           <label>Titill:

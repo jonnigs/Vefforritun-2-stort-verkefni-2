@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 import { get } from '../../api';
 
@@ -118,6 +119,7 @@ class Books extends Component {
 
     return (
       <div className='meginmal'>
+        <Helmet title="Bækur" />
         {heading}
         {gogn}
         <div className='takkaDiv'>
