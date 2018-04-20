@@ -1,0 +1,49 @@
+.newFormBox {
+  margin: 2em;
+}
+
+.newFormBox > button {
+  margin: 1em 0;
+}
+
+.newForm {
+  width: 45%;
+}
+
+.newForm > label {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5em
+}
+
+.newForm > label > input {
+  width: 70%;
+  margin-bottom: 2em;
+}
+
+.newForm > label > select {
+  width: 70%;
+  margin: 0 1em 2em 0;
+}
+
+.lysingLabel {
+  display: flex;
+  flex-flow: column;
+}
+
+.lysing {
+  width: 96%;
+  height: 15em;
+  margin: 0 1em;
+  align-self: flex-end;
+  resize: none;
+  overflow: auto;
+}
+
+.villur {
+  color: red;
+}
+
+.success {
+  color: green;
+}

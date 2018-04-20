@@ -5,6 +5,7 @@
 }
 
 h1.header__heading {
+  align-self: center;
   padding: 0.5em 1em;
 }
 
@@ -22,4 +23,21 @@ form {
 a.nav {
    align-self: center;
    padding: 0.5em 1em;
+}
+
+.profilebox {
+  display: flex;
+}
+
+.profilepic {
+  margin: 1em;
+  border-radius: 400px;
+  width: auto;
+  height: 50px;
+  align-self: center;
+}
+
+.profilerest {
+  align-self: center;
+  margin-right: 1em;
 }

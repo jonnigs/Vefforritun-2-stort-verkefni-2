@@ -1,0 +1,41 @@
+.editFormBox {
+  margin: 2em;
+}
+
+.editFormBox > button {
+  margin: 1em 0;
+}
+
+.editForm {
+  width: 45%;
+}
+
+.editForm > label {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5em
+}
+
+.editForm > label > input {
+  width: 70%;
+  margin-bottom: 2em;
+}
+
+.editForm > label > select {
+  width: 70%;
+  margin: 0 1em 2em 0;
+}
+
+.lysingLabel {
+  display: flex;
+  flex-flow: column;
+}
+
+.lysing {
+  width: 96%;
+  height: 15em;
+  margin: 0 1em;
+  align-self: flex-end;
+  resize: none;
+  overflow: auto;
+}

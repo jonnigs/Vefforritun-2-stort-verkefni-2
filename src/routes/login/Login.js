@@ -5,8 +5,6 @@ import { loginPost } from '../../api';
 
 import Button from '../../components/button';
 
-/* todo sækja actions frá ./actions */
-
 import './Login.css';
 
 class Login extends Component {
@@ -33,9 +31,9 @@ class Login extends Component {
 
   async handleSubmit(e) {
     e.preventDefault();
-    const { user, token } = await loginPost(this.state.username, this.state.password);
-    if (token.error) {
-      this.setState({message: token.error});
+    const { user, token, error } = await loginPost(this.state.username, this.state.password);
+    if (error) {
+      this.setState({message: error});
     } else {
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
@@ -46,11 +44,15 @@ class Login extends Component {
   render() {
     const { username, password, message } = this.state;
 
+    if (localStorage.getItem('user')) {
+      return (<p>Þú ert nú þegar innskráður notandi</p>)
+    }
+    
     return (
-      <div>
-        <h2>Innskráning</h2>
-        <p className='error'>{this.state.message}</p>
-        <form>
+      <div className='meginmal'>
+        <h1>Innskráning</h1>
+        <p className='villur'>{this.state.message}</p>
+        <form className='loginForm'>
           <label>Notendanafn:
             <input type='text' value={this.state.username} onChange={this.handleUsernameChange}/>
           </label>

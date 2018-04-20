@@ -4,6 +4,8 @@ import { get } from '../../api';
 
 import Button from '../../components/button';
 
+import './Books.css';
+
 class Books extends Component {
 
   constructor(props) {
@@ -11,6 +13,7 @@ class Books extends Component {
     this.state = {
       data: null,
       loading: true,
+      error: null,
       offset: 0,
       search: '',
     };
@@ -74,7 +77,7 @@ class Books extends Component {
   }
 
   render() {
-    const { data, loading, offset } = this.state;
+    const { data, error, loading, offset } = this.state;
 
     let fyrriTakki = '';
     if (Number(this.state.offset) !== 0) {
@@ -83,17 +86,17 @@ class Books extends Component {
     //console.log(this.state.data.items[0]);
     //if (this.state.data.items.lenght < 10)
 
-    let heading = <h2>Bækur</h2>;
+    let heading = <h1 className='bokaFyrirsogn'>Bækur</h1>;
     if (this.state.search !== ''){
-      heading = <h2>Bókaleit: {this.state.search}</h2>;
+      heading = <h2 className='bokaFyrirsogn'>Bókaleit: {this.state.search}</h2>;
     }
     if (loading) {
       return (<p>Hleð bókum...</p>);
     }
 
-    /*if (error) {
+    if (error) {
       return (<p>Villa við að hlaða bókum</p>);
-    }*/
+    }
 
     const counter = 0;
     const gogn = this.state.data.items.map((bok) => {
@@ -111,15 +114,15 @@ class Books extends Component {
         )
     })
 
-    console.log(counter);
-
     return (
-      <div>
+      <div className='meginmal'>
         {heading}
         {gogn}
-        {fyrriTakki}
-        <p>Síða {(Number(this.state.offset)/10) + 1}</p>
-        <Button onClick={this.handleNext} children='Næsta síða'/>
+        <div className='takkaDiv'>
+          {fyrriTakki}
+          <p>Síða {(Number(this.state.offset)/10) + 1}</p>
+          <Button onClick={this.handleNext} children='Næsta síða'/>
+        </div>
       </div>
     );
   }

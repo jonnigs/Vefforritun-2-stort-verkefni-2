@@ -1,0 +1,22 @@
+.meginmal {
+  margin: 2em;
+}
+
+.loginForm {
+  width: 45%;
+}
+
+.loginForm > label {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5em
+}
+
+.loginForm > label > input {
+  width: 70%;
+  margin-bottom: 2em;
+}
+
+.loginForm > button {
+  margin-bottom: 1em;
+}

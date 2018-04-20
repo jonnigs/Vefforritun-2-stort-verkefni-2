@@ -78,17 +78,171 @@ async function readPost(umsogn, einkunn, id) {
     options.headers['Accept'] = 'application/json';
     options.headers['Content-Type'] = 'application/json';
   }
-  console.log(options);
   const response = await fetch(url, options);
 
   const data = await response.json();
-  console.log(data);
   return data;
 }
+
+async function profilePatch(name, password, id) {
+  const endpoint = '/users/me';
+  const url = `${baseurl}${endpoint}`;
+
+  const token = window.localStorage.getItem('token');
+
+  const options = {
+    method: 'PATCH',
+    headers: {},
+    user: {
+      id: id,
+    },
+    body: {}
+  };
+
+  if (token) {
+    options.headers['Authorization'] = `Bearer ${token}`;
+    options.headers['Accept'] = 'application/json';
+    options.headers['Content-Type'] = 'application/json';
+  }
+
+  if (name) {
+    options.body['name'] = name;
+  }
+
+  if (password) {
+    options.body['password'] = password;
+  }
+
+  options.body = JSON.stringify(options.body);
+  const response = await fetch(url, options);
+  const data = await response.json();
+  return data;
+}
+
+async function editBookPatch(data, id, title, author, description, category, isbn10, isbn13, published, pageCount, language ) {
+
+  const endpoint = '/books/' + id;
+  const url = `${baseurl}${endpoint}`;
+
+  const token = window.localStorage.getItem('token');
+
+  const options = {
+    method: 'PATCH',
+    headers: {},
+    params: id,
+    body: {}
+  };
+
+  if (token) {
+    options.headers['Authorization'] = `Bearer ${token}`;
+    options.headers['Accept'] = 'application/json';
+    options.headers['Content-Type'] = 'application/json';
+  }
+
+  if(data.title !== title){
+    options.body['title'] = title;
+  }
+  if(data.author !== author){
+    options.body['author'] = author;
+  }
+  if(data.description !== description){
+    options.body['description'] = description;
+  }
+  if(data.category !== category){
+    options.body['category'] = category;
+  }
+  if(data.isbn10 !== isbn10){
+    options.body['isbn10'] = isbn10;
+  }
+  if(data.isbn13 !== isbn13){
+    options.body['isbn13'] = isbn13;
+  }
+  if(data.published !== published){
+    options.body['published'] = published;
+  }
+  if(data.pageCount !== pageCount){
+    options.body['pageCount'] = pageCount;
+  }
+  if(data.language !== language){
+    options.body['language'] = language;
+  }
+
+  console.log(options);
+
+  const response = await fetch(url, options);
+  const res = await response.json();
+  return res;
+}
+
+async function newBookPost(title, author, description, category, isbn10, isbn13, published, pageCount, language ) {
+
+  const endpoint = '/books';
+  const url = `${baseurl}${endpoint}`;
+
+  const token = window.localStorage.getItem('token');
+
+  const options = {
+    method: 'POST',
+    headers: {},
+    body: JSON.stringify({
+      title,
+      author,
+      description,
+      category,
+      isbn10,
+      isbn13,
+      published,
+      pageCount,
+      language,
+    })
+  };
+
+  if (token) {
+    options.headers['Authorization'] = `Bearer ${token}`;
+    options.headers['Accept'] = 'application/json';
+    options.headers['Content-Type'] = 'application/json';
+  }
+  console.log(options);
+
+  const response = await fetch(url, options);
+  const res = await response.json();
+  return res;
+}
+
+async function profileMyndPost(file, path, id) {
+  const endpoint = '/users/me/profile';
+  const url = `${baseurl}${endpoint}`;
+
+  const token = window.localStorage.getItem('token');
+
+  const options = {
+    method: 'POST',
+    headers: {},
+    file: file,
+    user: id,
+  };
+
+  options.file['path'] = path;
+
+  if (token) {
+    options.headers['Authorization'] = `Bearer ${token}`;
+    options.headers['Accept'] = 'application/json';
+    options.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+  }
+  console.log(options);
+  const response = await fetch(url, options);
+  const data = await response.json();
+  return data;
+}
+
 
 export {
   get,
   registerPost,
   loginPost,
   readPost,
+  profilePatch,
+  profileMyndPost,
+  editBookPatch,
+  newBookPost,
 };

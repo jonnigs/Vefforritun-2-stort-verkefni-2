@@ -5,8 +5,6 @@ import { registerPost } from '../../api';
 
 import Button from '../../components/button';
 
-/* todo sækja actions frá ./actions */
-
 import './Register.css';
 
 class Register extends Component {
@@ -47,7 +45,7 @@ class Register extends Component {
     } else {
       const message = mes.map((mess) => {
         return (
-          <p className='error'>{mess.message}</p>
+          <p className='villur'>{mess.message}</p>
         )
       });
       this.setState({
@@ -70,11 +68,15 @@ class Register extends Component {
   render() {
     const { username, password, name, message } = this.state;
 
+    if (localStorage.getItem('user')) {
+      return (<p>Þú ert nú þegar innskráður notandi</p>)
+    }
+    
     return (
-      <div>
+      <div className='meginmal'>
         <h2>Nýskráning</h2>
         {this.state.message}
-        <form>
+        <form className='registerForm'>
           <label>Notendanafn:
             <input type='text' value={this.state.userneame} onChange={this.handleUsernameChange}/>
           </label>

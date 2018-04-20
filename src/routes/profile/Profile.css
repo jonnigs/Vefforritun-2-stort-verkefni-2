@@ -1,0 +1,53 @@
+
+
+.meginmal {
+  margin: 2em;
+}
+
+.profileForm {
+  width: 35%;
+}
+
+.profileMynd {
+  margin: 3em 0;
+}
+
+.profileName {
+  display: flex;
+  flex-flow: column;
+  margin: 3em 0;
+}
+
+.profilePass {
+  margin: 3em 0 ;
+}
+
+.profileMynd > button {
+  width: 10em;
+}
+
+.profileName > button {
+  width: 10em;
+}
+
+.profilePass > button {
+  width: 10em;
+}
+
+.nameLabel, .passLabel {
+  display: flex;
+  justify-content: space-between;
+}
+
+.nameLabel > input, .passLabel > input {
+  width: 70%;
+  margin-bottom: 2em;
+}
+
+.profileLesnar {
+  margin: 2em 0;
+}
+
+.hverBok {
+  margin-bottom: 4em;
+}

@@ -12,9 +12,10 @@ import Book from './routes/book';
 import Login from './routes/login';
 import Register from './routes/register';
 import Users from './routes/users';
-import Me from './routes/me';
 import UserID from './routes/userid';
 import Profile from './routes/profile';
+import Edit from './routes/edit';
+import Newbook from './routes/newbook';
 import NotFound from './routes/not-found';
 /* todo fleiri routes */
 
@@ -35,13 +36,14 @@ class App extends Component {
           <Switch location={this.props.location}>
             <Route path="/" exact component={Home} />
             <Route path="/books" exact component={Books} />
+            <Route path="/books/new" exact component={Newbook} />
             <Route path="/books/:id" exact component={Book} />
+            <Route path="/books/:id/edit" exact component={Edit} />
             <Route path="/login" exact component={Login} />
             <Route path="/register" exact component={Register} />
             <Route path="/users" exact component={Users} />
-            <Route path="/users/me" exact component={Me} />
-            <Route parth="/users/:id" exact component={UserID} />
-            <UserRoute path="/profile" authenticated={authenticated} component={Profile} />
+            <Route path="/users/:id" exact component={UserID} />
+            <Route path="/profile" exact component={Profile} />
             {/* todo fleiri route */}
             <Route component={NotFound} />
           </Switch>

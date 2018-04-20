@@ -1,0 +1,13 @@
+.meginmal {
+  margin: 2em;
+}
+
+.bokaFyrirsogn {
+  padding-bottom: 1em;
+}
+
+.takkaDiv {
+  width: 70%;
+  display: flex;
+  justify-content: space-between;
+}

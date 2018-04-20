@@ -1,0 +1,22 @@
+.meginmal {
+  margin: 2em;
+}
+
+.registerForm {
+  width: 45%;
+}
+
+.registerForm > label {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5em
+}
+
+.registerForm > label > input {
+  width: 70%;
+  margin-bottom: 2em;
+}
+
+.registerForm > button {
+  margin-bottom: 1em;
+}
