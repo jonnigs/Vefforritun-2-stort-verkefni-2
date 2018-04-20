@@ -19,7 +19,6 @@ async function get(endpoint) {
   return data;
 }
 
-/* todo aðrar aðgerðir */
 async function registerPost(username, password, name) {
   const endpoint = '/register';
   const url = `${baseurl}${endpoint}`;
